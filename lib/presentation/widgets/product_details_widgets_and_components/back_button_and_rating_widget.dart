@@ -5,7 +5,8 @@ import '../../../core/assets_path/fonts_path.dart';
 import '../../../core/theme/app_colors.dart';
 
 class BackButtonAndRatingWidget extends StatelessWidget {
-  const BackButtonAndRatingWidget({Key? key}) : super(key: key);
+  final double rate;
+  const BackButtonAndRatingWidget({Key? key, required this.rate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class BackButtonAndRatingWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "4.5",
+                  "$rate",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 12.sp,

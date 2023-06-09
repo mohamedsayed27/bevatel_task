@@ -11,6 +11,7 @@ import 'package:untitled/presentation/screens/cart_screen.dart';
 import 'core/network/dio_helper.dart';
 import 'core/services/services_locator.dart';
 import 'core/theme/app_colors.dart';
+import 'data/data_source/cart_remote_data_source.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +22,9 @@ void main() async {
 }
 
 void getP() async {
-  ProductsRemoteDataSource productsRemoteDataSource =
-      ProductsRemoteDataSource(dioHelper: sl());
-  await productsRemoteDataSource.getProductDetails(2);
+  CartRemoteDataSource productsRemoteDataSource =
+      CartRemoteDataSource(dioHelper: sl());
+  await productsRemoteDataSource.getUserCart();
 }
 
 class MyApp extends StatelessWidget {

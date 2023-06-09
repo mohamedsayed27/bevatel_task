@@ -6,7 +6,9 @@ import 'package:shimmer/shimmer.dart';
 import 'package:untitled/presentation/controllers/products_bloc/product_bloc.dart';
 import 'package:untitled/presentation/controllers/products_bloc/product_state.dart';
 
+import '../../../core/app_router/screens_name.dart';
 import '../../../core/assets_path/fonts_path.dart';
+import '../../../core/constants/constants.dart';
 import '../../controllers/products_bloc/product_event.dart';
 
 class PopularProductComponent extends StatelessWidget {
@@ -50,12 +52,21 @@ class PopularProductComponent extends StatelessWidget {
             ),
             BlocConsumer<ProductBloc, ProductState>(
               listener: (context, state) {
-
+                var cubit = ProductBloc.get(context);
+                if(state is GetProductDetailsLoading){
+                  showProgressIndicator(context);
+                }
+                if(state is GetProductDetailsSucess){
+                  Navigator.pop(context);
+                  Navigator.pushNamed(
+                      context, ScreenName.productDetails,
+                      arguments: cubit.getProductDetailsEntity);
+                }
               },
               builder: (context, state) {
                 var cubit = ProductBloc.get(context);
                 return Expanded(
-                  child: state is! GetProductDetailsLoading?ListView.builder(
+                  child: state is! GetAllProductsLoading?ListView.builder(
                     padding: EdgeInsets.zero,
                     scrollDirection: Axis.horizontal,
                     itemCount: cubit.allProductsList.length,
@@ -66,9 +77,7 @@ class PopularProductComponent extends StatelessWidget {
                         child: InkWell(
                           onTap: () {
                             cubit.add(GetProductDetailsEvent(id: cubit.allProductsList[index].id!));
-                            // Navigator.pushNamed(
-                            //     context, ScreenName.productDetails,
-                            //     arguments: HomeDummyData.productList[index]);
+
                           },
                           child: Container(
                             height: 150.h,

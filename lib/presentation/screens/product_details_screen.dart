@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/domain/entities/product_details_entity.dart';
 
 import '../../core/assets_path/fonts_path.dart';
 import '../../core/theme/app_colors.dart';
@@ -8,7 +9,7 @@ import '../widgets/product_details_widgets_and_components/update_colors_widget.d
 import '../widgets/shared_widgets/custom_button.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  final Map<String, dynamic> product;
+  final GetProductDetailsEntity product;
 
   const ProductDetailsScreen({Key? key, required this.product})
       : super(key: key);
@@ -28,11 +29,11 @@ class ProductDetailsScreen extends StatelessWidget {
                 color: AppColors.whitColor,
               ),
               child: ProductDetailsHeaderComponent(
-                productImages: product['imagesList'],
+                image: product.image!, rate: 4.2,
               ),
             ),
             Container(
-              height: 480.h,
+              height: 550.h,
               width: double.infinity,
               padding: EdgeInsets.only(top: 30.h),
               decoration: BoxDecoration(
@@ -60,7 +61,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 15.w),
-                    child: Text(product['title'],
+                    child: Text(product.title!,
                         style: TextStyle(
                             color: Colors.black,
                             fontFamily: FontsPath.poppinsMedium,
@@ -99,7 +100,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         horizontal: 15.w,
                       ),
                       child: Text(
-                        product['details'],
+                        product.description!,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         style: TextStyle(

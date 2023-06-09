@@ -55,15 +55,32 @@ class CartScreen extends StatelessWidget {
                           itemCount:
                               CartDummyData.cartList[cartIndex]["items"].length,
                           itemBuilder: (BuildContext context, int index) {
-                            return CartItem(
-                              image: CartDummyData.cartList[cartIndex]["items"]
-                                  [index]["productImage"],
-                              productTitle: CartDummyData.cartList[cartIndex]
-                                  ["items"][index]["productTitle"],
-                              productCount: CartDummyData.cartList[cartIndex]
-                                  ["items"][index]["count"],
-                              productPrice: CartDummyData.cartList[cartIndex]
-                                  ["items"][index]["price"],
+                            return Dismissible(
+                              onDismissed: (di) {
+                              },
+                              background: Container(
+                                padding: EdgeInsets.only(right: 15.r),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  color: AppColors.pinkColor.withOpacity(0.3),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(Icons.delete_outline_sharp,color: AppColors.pinkColor,),
+                                ),
+                              ),
+                              direction: DismissDirection.endToStart,
+                              key: const ValueKey(1),
+                              child: CartItem(
+                                image: CartDummyData.cartList[cartIndex]["items"]
+                                    [index]["productImage"],
+                                productTitle: CartDummyData.cartList[cartIndex]
+                                    ["items"][index]["productTitle"],
+                                productCount: CartDummyData.cartList[cartIndex]
+                                    ["items"][index]["count"],
+                                productPrice: CartDummyData.cartList[cartIndex]
+                                    ["items"][index]["price"],
+                              ),
                             );
                           },
                         )

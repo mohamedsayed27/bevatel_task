@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/core/app_router/screens_name.dart';
 
+import '../../domain/entities/product_details_entity.dart';
 import '../../presentation/screens/cart_screen.dart';
 import '../../presentation/screens/main_layout.dart';
 import '../../presentation/screens/product_details_screen.dart';
@@ -17,7 +18,7 @@ class AppRouter {
         case ScreenName.mainLayoutScreen:
           return MaterialPageRoute(builder: (_)=> const MainLayoutScreen());
         case ScreenName.productDetails:
-          final args = settings.arguments as Map<String, dynamic>;
+          final args = settings.arguments as GetProductDetailsEntity;
           return _animateRouteBuilder(ProductDetailsScreen(product: args,));
         case ScreenName.cartScreen:
           return _animateRouteBuilder(const CartScreen());
