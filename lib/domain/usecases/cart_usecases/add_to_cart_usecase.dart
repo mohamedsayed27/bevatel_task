@@ -4,12 +4,12 @@ import 'package:untitled/domain/entities/add_to_cart_entity.dart';
 import '../../../core/base_usecases/base_usecase.dart';
 import '../../repostiory/cart_base_repository.dart';
 
-class AddToCartUsecase extends BaseUsecase<AddToCartEntity, AddToCartParameters> {
+class AddToCartUsecase extends BaseUsecase<AddToCartEntity, List<AddToCartParameters>> {
   final CartBaseRepository cartBaseRepository;
 
   AddToCartUsecase({required this.cartBaseRepository});
   @override
-  Future<AddToCartEntity> call(AddToCartParameters parameters) async{
+  Future<AddToCartEntity> call(List<AddToCartParameters> parameters) async{
     return await cartBaseRepository.addToCart(parameters);
   }
 }

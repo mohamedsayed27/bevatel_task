@@ -7,6 +7,7 @@ class GetProductDetailsEntity extends Equatable {
   final String? category;
   final String? description;
   final String? image;
+  final int? count;
 
   const GetProductDetailsEntity({
     required this.id,
@@ -15,11 +16,12 @@ class GetProductDetailsEntity extends Equatable {
     required this.category,
     required this.description,
     required this.image,
+     this.count,
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id, title, price, category, description, image];
+  List<Object?> get props => [id, title, price, category, description, image,count];
 
 
 }

@@ -21,10 +21,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(GetAllProductsLoading());
       try{
         final response = await getAllProductUsecase(const NoParameters());
-        allProductsList = response;
+        if(allProductsList.isEmpty){
+          allProductsList=response;
+        }else{
+          allProductsList.addAll(response);
+        }
         emit(GetAllProductsSucess());
       }catch(error){
-        print(error.toString());
         emit(GetAllProductsError(error.toString()));
       }
     });
@@ -36,7 +39,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         getProductDetailsEntity = response;
         emit(GetProductDetailsSucess());
       }catch(error){
-        print(error.toString());
         emit(GetProductDetailsError(error.toString()));
       }
     });

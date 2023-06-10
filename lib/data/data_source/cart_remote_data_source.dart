@@ -7,7 +7,7 @@ import '../models/add_to_cart_model.dart';
 
 abstract class CartRemoteBaseDataSource{
 Future<List<GetUserCartModel>> getUserCart();
-Future<AddToCartModel> addToCart(AddToCartParameters addToCartParameters);
+Future<AddToCartModel> addToCart(List<AddToCartParameters> addToCartParameters);
 }
 
 class CartRemoteDataSource extends CartRemoteBaseDataSource{
@@ -17,18 +17,16 @@ class CartRemoteDataSource extends CartRemoteBaseDataSource{
   @override
   Future<List<GetUserCartModel>> getUserCart() async{
     final response =  await dioHelper.getData(url: EndPoints.getUserCart);
-    print(List<GetUserCartModel>.from(response.data.map((e) => GetUserCartModel.fromJson(e,150))).toList());
     return List<GetUserCartModel>.from(response.data.map((e) => GetUserCartModel.fromJson(e,150))).toList();
   }
 
   @override
-  Future<AddToCartModel> addToCart(AddToCartParameters addToCartParameters)async{
+  Future<AddToCartModel> addToCart(List<AddToCartParameters> addToCartParameters)async{
     final response =  await dioHelper.postData(url: EndPoints.addToCart,data: {
       "userId":1,
       "date":DateTime.now().toIso8601String(),
-      "products":[addToCartParameters.toJson()]
+      "products":addToCartParameters.map((e) => e.toJson()).toList(),
     });
-    print(response);
     return AddToCartModel.fromJson(response.data);
   }
 }

@@ -14,17 +14,15 @@ class CartRepository extends CartBaseRepository{
     try{
       return await cartRemoteBaseDataSource.getUserCart();
     }catch(error){
-      print(error);
       rethrow;
     }
   }
 
   @override
-  Future<AddToCartEntity> addToCart(AddToCartParameters addToCartParameters) async{
+  Future<AddToCartEntity> addToCart(List<AddToCartParameters> addToCartParameters) async{
     try{
       return await cartRemoteBaseDataSource.addToCart(addToCartParameters);
     }catch(error){
-      print(error);
       rethrow;
     }
   }

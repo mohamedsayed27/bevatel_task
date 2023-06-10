@@ -5,7 +5,8 @@ import '../../../core/assets_path/fonts_path.dart';
 
 class CustomCartAppBar extends StatelessWidget {
   final String itemsNumber;
-  const CustomCartAppBar({Key? key, required this.itemsNumber}) : super(key: key);
+  final String title;
+  const CustomCartAppBar({Key? key, required this.itemsNumber, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class CustomCartAppBar extends StatelessWidget {
       title: Column(
         children: [
           Text(
-            "Your cart",
+            title,
             style: TextStyle(
               color: Colors.black,
               fontFamily: FontsPath.poppinsMedium,

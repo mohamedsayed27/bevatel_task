@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/presentation/widgets/product_details_widgets_and_components/product_images_alboum_widget.dart';
 
-import '../../../core/assets_path/fonts_path.dart';
-import '../../../core/dummy_data/home_dummy_data.dart';
 import '../../../core/theme/app_colors.dart';
 import 'back_button_and_rating_widget.dart';
 

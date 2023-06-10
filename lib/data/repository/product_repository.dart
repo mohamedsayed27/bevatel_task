@@ -14,7 +14,6 @@ class ProductRepository extends ProductBaseRepository{
     try{
       return await productsRemoteDataSource.getAllProductsList();
     }catch(error){
-      print(error);
       rethrow;
     }
   }
@@ -24,7 +23,6 @@ class ProductRepository extends ProductBaseRepository{
     try{
       return await productsRemoteDataSource.getProductDetails(id);
     }catch(error){
-      print(error);
       rethrow;
     }
   }

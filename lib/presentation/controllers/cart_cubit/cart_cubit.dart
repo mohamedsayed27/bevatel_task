@@ -4,6 +4,7 @@ import 'package:untitled/domain/entities/add_to_cart_entity.dart';
 import 'package:untitled/domain/usecases/cart_usecases/add_to_cart_usecase.dart';
 
 import '../../../domain/entities/get_user_cart_entity.dart';
+import '../../../domain/entities/product_details_entity.dart';
 import '../../../domain/usecases/cart_usecases/get_user_cart_usecase.dart';
 import 'cart_state.dart';
 
@@ -13,15 +14,18 @@ class CartCubit extends Cubit<CartState> {
   CartCubit(this._getUserCartUsecase, this._addToCartUsecase) : super(CartInitial());
   static CartCubit get(context) => BlocProvider.of(context);
 
-  List<GetUserCartEntity> userCartList =[];
+  List<GetUserCartEntity> appCartList =[];
+  List<GetProductDetailsEntity> userCartList =[];
 
   AddToCartEntity? addToCartEntity;
-  int cartItemsNumberCount = 0;
-  int totalPrice = 0;
+  int appCartItemsNumberCount = 0;
+  int appCartTotalPrice = 0;
+  int userCartItemsNumberCount = 0;
+  double userCartTotalPrice = 0;
   void getUserCart()async{
     emit(GetUserCartLoading());
     try{
-      userCartList = await _getUserCartUsecase(const NoParameters());
+      appCartList = await _getUserCartUsecase(const NoParameters());
       getCartItemsNumber();
       getTotalPrice();
       emit(GetUserCartSuccess());
@@ -30,50 +34,69 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  int count = 0;
+  int count = 1;
   void increaseCount(){
     count++;
     emit(IncreaseCountSuccess());
   }
   void decreaseCount(){
-    if(count>0){
+    if(count>1){
       count--;
       emit(DecreaseCountSuccess());
     }
   }
   void getCartItemsNumber(){
-    for (var e in userCartList) {
-      cartItemsNumberCount =cartItemsNumberCount+e.products!.length;
+    for (var e in appCartList) {
+      appCartItemsNumberCount =appCartItemsNumberCount+e.products!.length;
     }
   }
 
+  void addToUserCartList(GetProductDetailsEntity getProductDetailsEntity){
+    userCartList.add(getProductDetailsEntity);
+    userCartTotalPrice=0;
+    getUserCartListTotalPrice();
+    emit(AddToUserCartSuccess());
+  }
   void getTotalPrice(){
-     for (var e in userCartList) {
+     for (var e in appCartList) {
        for (var e in e.products!) {
-         totalPrice += e.price!*e.quantity!;
+         appCartTotalPrice += e.price!*e.quantity!;
        }
      }
   }
+  void getUserCartListTotalPrice(){
+     for (var e in userCartList) {
+       userCartTotalPrice+=(e.price!.toInt()*e.count!);
+     }
+  }
 
-  void deleteItemFromCartList({required int cartProIndex, required int index}){
-    userCartList[cartProIndex].products!.removeAt(index);
-    if(userCartList[cartProIndex].products!.isEmpty){
-      userCartList.removeAt(cartProIndex);
+  void deleteItemFromAppCartList({required int cartProIndex, required int index}){
+    appCartList[cartProIndex].products!.removeAt(index);
+    if(appCartList[cartProIndex].products!.isEmpty){
+      appCartList.removeAt(cartProIndex);
     }
-    cartItemsNumberCount=0;
-    totalPrice=0;
+    appCartItemsNumberCount=0;
+    appCartTotalPrice=0;
     getCartItemsNumber();
     getTotalPrice();
     emit(ItemRemovedSuccessState());
   }
 
-  void addToCart({required AddToCartParameters addToCartParameters})async{
-    emit(AddToCartCartLoading());
+  void deleteFromUserCartList({required int index}){
+    userCartList.removeAt(index);
+    userCartItemsNumberCount=0;
+    userCartTotalPrice=0;
+    getUserCartListTotalPrice();
+    emit(ItemRemovedSuccessState());
+  }
+
+  void checkOutCart()async{
+    emit(CheckOutCartLoading());
     try{
-      addToCartEntity = await _addToCartUsecase(addToCartParameters);
-      emit(AddToCartCartSuccess());
+      addToCartEntity = await _addToCartUsecase(userCartList.map((e) => AddToCartParameters(productId: e.id!, productCount: e.count!)).toList());
+      emit(CheckOutCartSuccess());
     }catch(error){
-      emit(AddToCartCartError(error.toString()));
+      emit(CheckOutCartError(error.toString()));
     }
   }
 }

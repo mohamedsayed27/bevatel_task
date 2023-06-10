@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/core/app_router/screens_name.dart';
+import 'package:untitled/presentation/screens/user_cart_screen.dart';
 
 import '../../domain/entities/product_details_entity.dart';
+import '../../presentation/screens/all_products_screen.dart';
 import '../../presentation/screens/cart_screen.dart';
 import '../../presentation/screens/main_layout.dart';
 import '../../presentation/screens/product_details_screen.dart';
@@ -22,6 +24,10 @@ class AppRouter {
           return _animateRouteBuilder(ProductDetailsScreen(product: args,));
         case ScreenName.cartScreen:
           return _animateRouteBuilder(const CartScreen());
+        case ScreenName.allProductsScreen:
+          return _animateRouteBuilder(const AllProductsScreen());
+        case ScreenName.userCartScreen:
+          return _animateRouteBuilder(const UserCartScreen());
         default:
           return _errorRoute();
       }

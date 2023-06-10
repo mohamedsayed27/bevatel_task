@@ -5,11 +5,12 @@ import '../../../core/assets_path/fonts_path.dart';
 import '../../../core/theme/app_colors.dart';
 
 class CartItem extends StatelessWidget {
+  final bool isUserCart;
   final String image;
   final String productTitle;
   final String productCount;
   final String productPrice;
-  const CartItem({Key? key, required this.image, required this.productTitle, required this.productCount, required this.productPrice}) : super(key: key);
+  const CartItem({Key? key, required this.image, required this.productTitle, required this.productCount, required this.productPrice, this.isUserCart = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,8 @@ class CartItem extends StatelessWidget {
               ],
             ),
             child: Center(
-              child: Image.asset(
+              child: isUserCart?Image.network(image,width: 50.w,
+                height: 50.h,):Image.asset(
                 image,
                 width: 50.w,
                 height: 50.h,

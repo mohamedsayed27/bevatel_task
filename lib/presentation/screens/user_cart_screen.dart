@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:untitled/core/assets_path/images_path.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/core/assets_path/svg_path.dart';
+import 'package:untitled/core/constants/constants.dart';
 import 'package:untitled/core/theme/app_colors.dart';
 
 import '../../core/assets_path/fonts_path.dart';
@@ -13,21 +14,29 @@ import '../widgets/shared_widgets/custom_app_bar.dart';
 import '../widgets/home_screen_widgets_and_components/header_icon_button.dart';
 import '../widgets/shared_widgets/custom_button.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key}) : super(key: key);
+class UserCartScreen extends StatefulWidget {
+  const UserCartScreen({Key? key}) : super(key: key);
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<UserCartScreen> createState() => _UserCartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
-  int count = 0;
+class _UserCartScreenState extends State<UserCartScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocConsumer<CartCubit, CartState>(
         listener: (context, state) {
-          // TODO: implement listener
+          var cubit = CartCubit.get(context);
+          if(state is CheckOutCartLoading){
+            showProgressIndicator(context);
+          }
+          if(state is CheckOutCartSuccess){
+            Navigator.pop(context);
+            cubit.userCartList.clear();
+            Fluttertoast.showToast(msg: "All Done successfully",backgroundColor: Colors.green);
+            Navigator.pop(context);
+          }
         },
         builder: (context, state) {
           var cubit = CartCubit.get(context);
@@ -35,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
             backgroundColor: Colors.white,
             appBar: PreferredSize(
               preferredSize: Size(double.infinity, 70.h),
-              child: CustomCartAppBar(itemsNumber: '${cubit.appCartItemsNumberCount}', title: 'Your cart',),
+              child: CustomCartAppBar(itemsNumber: '${cubit.userCartList.length}', title: 'Your cart',),
             ),
             body: Column(
               children: [
@@ -44,64 +53,38 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: cubit.appCartList.length,
-                    itemBuilder: (BuildContext context, int cartIndex) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.h, horizontal: 18.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Cart Number ${cartIndex+1}",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: FontsPath.poppinsMedium,
-                                fontSize: 16.sp,
-                              ),
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: cubit.userCartList.length,
+                    itemBuilder: (BuildContext context,
+                        int index) {
+                      return Dismissible(
+                        onDismissed: (di) {
+                          cubit.deleteFromUserCartList(index: index);
+                        },
+                        background: Container(
+                          padding: EdgeInsets.only(right: 15.r),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                15.r),
+                            color:
+                            AppColors.pinkColor.withOpacity(0.3),
+                          ),
+                          child: const Align(
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              Icons.delete_outline_sharp,
+                              color: AppColors.pinkColor,
                             ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: cubit.appCartList[cartIndex].products!.length,
-                              itemBuilder: (BuildContext context,
-                                  int index) {
-                                return Dismissible(
-                                  onDismissed: (di) {
-                                    cubit.deleteItemFromAppCartList(cartProIndex: cartIndex, index: index);
-                                  },
-                                  background: Container(
-                                    padding: EdgeInsets.only(right: 15.r),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          15.r),
-                                      color:
-                                      AppColors.pinkColor.withOpacity(0.3),
-                                    ),
-                                    child: const Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Icon(
-                                        Icons.delete_outline_sharp,
-                                        color: AppColors.pinkColor,
-                                      ),
-                                    ),
-                                  ),
-                                  direction: DismissDirection.endToStart,
-                                  key: ValueKey(cubit.appCartList[cartIndex].products![index]),
-                                  child: CartItem(
-                                    image: ImagesPath.p1,
-                                    productTitle: "Product id Number ${cubit.appCartList[cartIndex].products![index].productId}",
-                                    productCount: "Product quantity Number ${cubit.appCartList[cartIndex].products![index].quantity}",
-                                    productPrice:"${(cubit.appCartList[cartIndex].products![index].price!*cubit.appCartList[cartIndex].products![index].quantity!)} \$",
-                                  ),
-                                );
-                              },
-                            )
-                          ],
+                          ),
+                        ),
+                        direction: DismissDirection.endToStart,
+                        key: ValueKey(cubit.userCartList[index]),
+                        child: CartItem(
+                          isUserCart: true,
+                          image: cubit.userCartList[index].image!,
+                          productTitle: "${cubit.userCartList[index].title}",
+                          productCount: "${cubit.userCartList[index].count}",
+                          productPrice:"${(cubit.userCartList[index].price!.toInt()*cubit.userCartList[index].count!).toInt()} \$",
                         ),
                       );
                     },
@@ -139,7 +122,7 @@ class _CartScreenState extends State<CartScreen> {
                               height: 10.h,
                             ),
                             Text(
-                              "\$ ${cubit.appCartTotalPrice}",
+                              "\$ ${cubit.userCartTotalPrice.toInt()}",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: FontsPath.poppinsBold,
@@ -178,7 +161,9 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             CustomButton(
                               title: "Check Out",
-                              onTap: () {},
+                              onTap: () {
+                                cubit.checkOutCart();
+                              },
                             )
                           ],
                         ),

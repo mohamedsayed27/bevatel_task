@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/domain/entities/product_details_entity.dart';
 import 'package:untitled/presentation/controllers/cart_cubit/cart_cubit.dart';
 import 'package:untitled/presentation/controllers/cart_cubit/cart_state.dart';
 
 import '../../core/assets_path/fonts_path.dart';
 import '../../core/theme/app_colors.dart';
-import '../../domain/usecases/cart_usecases/add_to_cart_usecase.dart';
 import '../widgets/product_details_widgets_and_components/product_details_header_component.dart';
 import '../widgets/product_details_widgets_and_components/update_colors_widget.dart';
 import '../widgets/shared_widgets/custom_button.dart';
@@ -33,7 +33,8 @@ class ProductDetailsScreen extends StatelessWidget {
                 color: AppColors.whitColor,
               ),
               child: ProductDetailsHeaderComponent(
-                image: product.image!, rate: 4.2,
+                image: product.image!,
+                rate: 4.2,
               ),
             ),
             Container(
@@ -65,11 +66,14 @@ class ProductDetailsScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 15.w),
-                    child: Text(product.title!,
+                    child: Text(
+                      product.title!,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: FontsPath.poppinsMedium,
-                        fontSize: 24.sp,),),
+                        fontSize: 24.sp,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -163,9 +167,23 @@ class ProductDetailsScreen extends StatelessWidget {
                               builder: (context, state) {
                                 var cubit = CartCubit.get(context);
                                 return CustomButton(
-                                  title: "Add to Cart", onTap: () {
-                                  cubit.addToCart(addToCartParameters: AddToCartParameters(productId: product.id!, productCount: cubit.count));
-                                },);
+                                  title: "Add to Cart",
+                                  onTap: () {
+                                    cubit.addToUserCartList(
+                                        GetProductDetailsEntity(
+                                      id: product.id,
+                                      title: product.title,
+                                      price: product.price,
+                                      category: product.category,
+                                      description: product.description,
+                                      image: product.image,
+                                      count: cubit.count,
+                                    ));
+                                    Fluttertoast.showToast(
+                                        msg: "Added to cart",
+                                        backgroundColor: Colors.green);
+                                  },
+                                );
                               },
                             ),
                           ),

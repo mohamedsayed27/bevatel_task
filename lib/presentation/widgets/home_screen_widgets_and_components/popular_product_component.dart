@@ -9,6 +9,7 @@ import 'package:untitled/presentation/controllers/products_bloc/product_state.da
 import '../../../core/app_router/screens_name.dart';
 import '../../../core/assets_path/fonts_path.dart';
 import '../../../core/constants/constants.dart';
+import '../../controllers/cart_cubit/cart_cubit.dart';
 import '../../controllers/products_bloc/product_event.dart';
 
 class PopularProductComponent extends StatelessWidget {
@@ -19,7 +20,7 @@ class PopularProductComponent extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 20.h),
       child: SizedBox(
-        height: 250.h,
+        height: 260.h,
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -27,7 +28,7 @@ class PopularProductComponent extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "Popular product",
@@ -37,14 +38,20 @@ class PopularProductComponent extends StatelessWidget {
                     fontSize: 18.sp,
                   ),
                 ),
-                Text(
-                  "See more",
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontFamily: FontsPath.poppinsLight,
-                    fontSize: 14.sp,
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, ScreenName.allProductsScreen);
+                  },
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    "See more",
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontFamily: FontsPath.poppinsLight,
+                      fontSize: 14.sp,
+                    ),
                   ),
-                ),
+                )
               ],
             ),
             SizedBox(
@@ -58,6 +65,7 @@ class PopularProductComponent extends StatelessWidget {
                 }
                 if (state is GetProductDetailsSucess) {
                   Navigator.pop(context);
+                  CartCubit.get(context).count = 1;
                   Navigator.pushNamed(
                     context,
                     ScreenName.productDetails,
@@ -72,7 +80,7 @@ class PopularProductComponent extends StatelessWidget {
                       ? ListView.builder(
                           padding: EdgeInsets.zero,
                           scrollDirection: Axis.horizontal,
-                          itemCount: cubit.allProductsList.length,
+                          itemCount: 20,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(

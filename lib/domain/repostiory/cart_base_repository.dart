@@ -5,5 +5,5 @@ import '../usecases/cart_usecases/add_to_cart_usecase.dart';
 
 abstract class CartBaseRepository{
   Future<List<GetUserCartEntity>> getUserCart();
-  Future<AddToCartEntity> addToCart(AddToCartParameters addToCartParameters);
+  Future<AddToCartEntity> addToCart(List<AddToCartParameters> addToCartParameters);
 }

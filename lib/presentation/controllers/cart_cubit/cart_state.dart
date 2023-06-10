@@ -9,13 +9,14 @@ class GetUserCartError extends CartState {
 
   GetUserCartError(this.error);
 }
-class AddToCartCartLoading extends CartState {}
-class AddToCartCartSuccess extends CartState {}
-class AddToCartCartError extends CartState {
+class CheckOutCartLoading extends CartState {}
+class CheckOutCartSuccess extends CartState {}
+class CheckOutCartError extends CartState {
   final String error;
 
-  AddToCartCartError(this.error);
+  CheckOutCartError(this.error);
 }
 class ItemRemovedSuccessState extends CartState {}
 class IncreaseCountSuccess extends CartState {}
 class DecreaseCountSuccess extends CartState {}
+class AddToUserCartSuccess extends CartState {}

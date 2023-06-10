@@ -15,14 +15,12 @@ class ProductsRemoteDataSource extends ProductsBaseRemoteDataSource{
   @override
   Future<List<GetAllProductsModel>> getAllProductsList() async{
     final response =  await dioHelper.getData(url: EndPoints.allProducts);
-    print(response);
     return List<GetAllProductsModel>.from(response.data.map((e) => GetAllProductsModel.fromJson(e))).toList();
   }
 
   @override
   Future<ProductDetailsModel> getProductDetails(int id) async{
     final response =  await dioHelper.getData(url: "${EndPoints.productDetailsById}$id");
-    print(response);
     return ProductDetailsModel.fromJson(response.data);
   }
 

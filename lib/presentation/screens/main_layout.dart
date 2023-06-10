@@ -13,10 +13,10 @@ class MainLayoutScreen extends StatefulWidget {
 class _MainLayoutScreenState extends State<MainLayoutScreen> {
   int currentScreenIndex = 0;
   List<Widget> screensList =[
-    HomeScreen(),
-    Scaffold(),
-    Scaffold(),
-    Scaffold(),
+    const HomeScreen(),
+    const Scaffold(),
+    const Scaffold(),
+    const Scaffold(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,6 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
               setState(() {
                 currentScreenIndex = index;
               });
-              print(currentScreenIndex);
             }
           },
         ),

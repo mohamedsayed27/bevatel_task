@@ -11,7 +11,6 @@ import 'bloc_observer.dart';
 import 'core/network/dio_helper.dart';
 import 'core/services/services_locator.dart';
 import 'core/theme/app_colors.dart';
-import 'data/data_source/cart_remote_data_source.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +47,7 @@ class MyApp extends StatelessWidget {
             ),
             onGenerateRoute: AppRouter.generateRoute,
             initialRoute: ScreenName.splashscreen,
-            // home: CartScreen(),
+            // home: AllProductsScreen(),
           )),
     );
   }
