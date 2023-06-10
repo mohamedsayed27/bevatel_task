@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../core/theme/app_colors.dart';
-import 'image_item_widget.dart';
-
 class ProductImagesAlbumWidget extends StatefulWidget {
   final String image;
 
@@ -24,14 +21,14 @@ class _ProductImagesAlbumWidgetState extends State<ProductImagesAlbumWidget> {
     return Column(
       children: [
         Container(
-          height: 150.h,
-          width:  150.w,
+          height: 200.h,
+          width:  200.w,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.r)
           ),
           child: CachedNetworkImage(
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             imageUrl: widget.image,
             placeholder: (context, url) => Shimmer.fromColors(
               baseColor: Colors.grey[400]!,

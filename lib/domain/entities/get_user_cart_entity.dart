@@ -33,12 +33,13 @@ class GetUserCartEntity extends Equatable{
 class UserCartProductsEntity extends Equatable {
   final int? productId;
   final int? quantity;
+  final int? price;
 
-  const UserCartProductsEntity({required this.productId, required this.quantity});
+  const UserCartProductsEntity({required this.productId, required this.quantity, required this.price});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [productId, quantity,];
+  List<Object?> get props => [productId, quantity,price];
 
   // factory Products.fromJson(Map<String, dynamic> json) {
   //   return Products(productId: json['productId'],

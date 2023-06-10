@@ -7,8 +7,8 @@ import '../../../core/theme/app_colors.dart';
 class CartItem extends StatelessWidget {
   final String image;
   final String productTitle;
-  final int productCount;
-  final int productPrice;
+  final String productCount;
+  final String productPrice;
   const CartItem({Key? key, required this.image, required this.productTitle, required this.productCount, required this.productPrice}) : super(key: key);
 
   @override
@@ -54,25 +54,21 @@ class CartItem extends StatelessWidget {
                     fontSize: 16.sp,
                   ),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "\$$productPrice",
-                      style: TextStyle(
-                        color: AppColors.orangeColor,
-                        fontFamily: FontsPath.poppinsMedium,
-                        fontSize: 16.sp,
-                      ),
-                    ),
-                    Text(
-                      "  ${productCount}X",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: FontsPath.poppinsLight,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  ],
+                Text(
+                  "${productCount}x",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: FontsPath.poppinsLight,
+                    fontSize: 14.sp,
+                  ),
+                ),
+                Text(
+                  "\$$productPrice",
+                  style: TextStyle(
+                    color: AppColors.orangeColor,
+                    fontFamily: FontsPath.poppinsMedium,
+                    fontSize: 16.sp,
+                  ),
                 ),
               ],
             ),

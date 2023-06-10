@@ -53,108 +53,117 @@ class PopularProductComponent extends StatelessWidget {
             BlocConsumer<ProductBloc, ProductState>(
               listener: (context, state) {
                 var cubit = ProductBloc.get(context);
-                if(state is GetProductDetailsLoading){
+                if (state is GetProductDetailsLoading) {
                   showProgressIndicator(context);
                 }
-                if(state is GetProductDetailsSucess){
+                if (state is GetProductDetailsSucess) {
                   Navigator.pop(context);
                   Navigator.pushNamed(
-                      context, ScreenName.productDetails,
-                      arguments: cubit.getProductDetailsEntity);
+                    context,
+                    ScreenName.productDetails,
+                    arguments: cubit.getProductDetailsEntity,
+                  );
                 }
               },
               builder: (context, state) {
                 var cubit = ProductBloc.get(context);
                 return Expanded(
-                  child: state is! GetAllProductsLoading?ListView.builder(
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: cubit.allProductsList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 10.h),
-                        child: InkWell(
-                          onTap: () {
-                            cubit.add(GetProductDetailsEvent(id: cubit.allProductsList[index].id!));
-
-                          },
-                          child: Container(
-                            height: 150.h,
-                            width: 150.w,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: Offset(2.w, 4.h),
-                                  blurRadius: 6.r,
-                                  color: Colors.black.withOpacity(0.19),
-                                ),
-                              ],
-                            ),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: cubit.allProductsList[index].image!,
-                              placeholder: (context, url) => Shimmer.fromColors(
-                                baseColor: Colors.grey[400]!,
-                                highlightColor: Colors.grey[300]!,
+                  child: state is! GetAllProductsLoading
+                      ? ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: cubit.allProductsList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w, vertical: 10.h),
+                              child: InkWell(
+                                onTap: () {
+                                  cubit.add(
+                                    GetProductDetailsEvent(
+                                      id: cubit.allProductsList[index].id!,
+                                    ),
+                                  );
+                                },
                                 child: Container(
-                                  height: double.infinity,
-                                  width: double.infinity,
+                                  height: 150.h,
+                                  width: 150.w,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
                                   decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(8.0),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(2.w, 4.h),
+                                        blurRadius: 6.r,
+                                        color: Colors.black.withOpacity(0.19),
+                                      ),
+                                    ],
+                                  ),
+                                  child: CachedNetworkImage(
+                                      fit: BoxFit.contain,
+                                      imageUrl:
+                                          cubit.allProductsList[index].image!,
+                                      placeholder: (context, url) =>
+                                          Shimmer.fromColors(
+                                            baseColor: Colors.grey[400]!,
+                                            highlightColor: Colors.grey[300]!,
+                                            child: Container(
+                                              height: double.infinity,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                              ),
+                                            ),
+                                          ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error)),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 3,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w, vertical: 10.h),
+                              child: Container(
+                                height: 150.h,
+                                width: 150.w,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(2.w, 4.h),
+                                      blurRadius: 6.r,
+                                      color: Colors.black.withOpacity(0.19),
+                                    ),
+                                  ],
+                                ),
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[400]!,
+                                  highlightColor: Colors.grey[300]!,
+                                  child: Container(
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
                                   ),
                                 ),
                               ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ):ListView.builder(
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 10.h),
-                        child: Container(
-                          height: 150.h,
-                          width: 150.w,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15.r),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(2.w, 4.h),
-                                blurRadius: 6.r,
-                                color: Colors.black.withOpacity(0.19),
-                              ),
-                            ],
-                          ),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey[400]!,
-                            highlightColor: Colors.grey[300]!,
-                            child: Container(
-                              height: double.infinity,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
                 );
               },
             ),
